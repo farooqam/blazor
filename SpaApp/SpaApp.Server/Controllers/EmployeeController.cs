@@ -29,5 +29,12 @@ namespace SpaApp.Server.Controllers
             Employee employee = await this.employeeRepository.GetEmployeeAsync(id);
             return Ok(employee);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteEmployee(string id)
+        {
+            await this.employeeRepository.DeleteEmployeeAsync(id);
+            return NoContent();
+        }
     }
 }

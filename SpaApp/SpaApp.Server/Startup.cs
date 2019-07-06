@@ -31,16 +31,27 @@ namespace SpaApp.Server
                     new[] { "application/octet-stream" });
             });
 
-            services.AddSingleton(s =>
-            {
-                string endpointUrl = this.Configuration.GetValue<string>("EndPointUrl");
-                string authorizationKey = this.Configuration.GetValue<string>("AuthorizationKey");
+            string endpointUrl = this.Configuration.GetValue<string>("EndPointUrl");
+            string authorizationKey = this.Configuration.GetValue<string>("AuthorizationKey");
+            CosmosClient cosmosClient = new CosmosClient(endpointUrl, authorizationKey);
 
-                return new CosmosClient(endpointUrl, authorizationKey);
-            });
+            Database database = cosmosClient.CreateDatabaseIfNotExistsAsync(this.Configuration.GetValue<string>("DatabaseName")).Result.Database;
 
+            ContainerResponse simpleContainer = database.CreateContainerIfNotExistsAsync(
+                id: this.Configuration.GetValue<string>("CollectionName"),
+                partitionKeyPath: "/id",
+                throughput: 400).Result;
+
+            UniqueKey k = new UniqueKey();
+            k.Paths.Add("/id");
+
+            UniqueKeyPolicy p = new UniqueKeyPolicy();
+            p.UniqueKeys.Add(k);
+
+            simpleContainer.Resource.UniqueKeyPolicy = p;            
+
+            services.AddSingleton(cosmosClient);
             services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
-
             services.Configure<CosmosDbOptions>(this.Configuration);
         }
 
@@ -64,6 +75,7 @@ namespace SpaApp.Server
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapFallbackToClientSideBlazor<Client.Startup>("index.html");
             });
+
         }
     }
 }
