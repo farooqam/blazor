@@ -1,0 +1,81 @@
+﻿@page "/calculator"
+
+<h1>Basic Calculator Using Blazor</h1>
+<hr />
+<div>
+    <div class="row">
+        <div class="col-sm-3">
+            <label class="control-label">First Number</label>
+        </div>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" placeholder="Enter First Number" @bind="@Operand1" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-3">
+            <label class="control-label">Second Number</label>
+        </div>
+        <div class="col-sm-4">
+            <input class="form-control" type="text" placeholder="Enter Second Number" @bind="@Operand2" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-sm-3">
+            <label class="control-label">Result</label>
+        </div>
+        <div class="col-sm-4">
+            <input readonly class="form-control" @bind="@Result" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <button @onclick="@Add" class="btn btn-primary">Add (+)</button>
+        </div>
+        <div class="col-md-3">
+            <button @onclick="@Subtract" class="btn btn-warning">Subtract (−)</button>
+        </div>
+        <div class="col-md-3">
+            <button @onclick="@Multiply" class="btn btn-success ">Multiply (X)</button>
+        </div>
+        <div class="col-md-3">
+            <button @onclick="@Divide" class="btn btn-info">Divide (/)</button>
+        </div>
+    </div>
+</div>
+
+@code {
+
+    double Operand1 { get; set; }
+    double Operand2 { get; set; }
+    double Result { get; set; }
+
+    void Add()
+    {
+        Result = Operand1 + Operand2;
+    }
+
+    void Subtract()
+    {
+        Result = Operand1 - Operand2;
+    }
+
+    void Multiply()
+    {
+        Result = Operand1 * Operand2;
+    }
+
+    void Divide()
+    {
+        if (Operand2 != 0)
+        {
+            Result = Operand1 / Operand2;
+        }
+        else
+        {
+            throw new Exception("Cannot divide by zero.");
+        }
+    }
+}
