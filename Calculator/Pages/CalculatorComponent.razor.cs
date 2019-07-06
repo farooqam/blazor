@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 namespace Calculator.Pages
 {
@@ -28,6 +29,7 @@ namespace Calculator.Pages
         {
             if (Operand2 == 0)
             {
+                
                 throw new Exception("Cannot divide by zero.");
             }
 
