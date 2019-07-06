@@ -1,4 +1,5 @@
 ﻿@page "/calculator"
+@inherits Calculator.Pages.CalculatorComponentModel
 
 <h1>Basic Calculator Using Blazor</h1>
 <hr />
@@ -45,37 +46,3 @@
         </div>
     </div>
 </div>
-
-@code {
-
-    double Operand1 { get; set; }
-    double Operand2 { get; set; }
-    double Result { get; set; }
-
-    void Add()
-    {
-        Result = Operand1 + Operand2;
-    }
-
-    void Subtract()
-    {
-        Result = Operand1 - Operand2;
-    }
-
-    void Multiply()
-    {
-        Result = Operand1 * Operand2;
-    }
-
-    void Divide()
-    {
-        if (Operand2 != 0)
-        {
-            Result = Operand1 / Operand2;
-        }
-        else
-        {
-            throw new Exception("Cannot divide by zero.");
-        }
-    }
-}
