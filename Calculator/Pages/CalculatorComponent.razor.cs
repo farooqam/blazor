@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
+﻿using Microsoft.AspNetCore.Components;
+using Calculator.Shared;
 
 namespace Calculator.Pages
 {
     public class CalculatorComponentModel : ComponentBase
     {
         [Inject]
-        protected IJSRuntime JSRuntime { get; set; }
+        protected ToastService ToastService { get; set; }
         protected double Operand1 { get; set; }
         protected double Operand2 { get; set; }
         protected double Result { get; set; }
@@ -31,7 +30,7 @@ namespace Calculator.Pages
         {
             if (Operand2 == 0)
             {
-                JSRuntime.InvokeAsync<bool>("showToast");
+                ToastService.ShowToast("Cannot divide by zero.");
                 return;
             }
 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components.Builder;
 using Microsoft.Extensions.DependencyInjection;
+using Calculator.Shared;
 
 namespace Calculator
 {
@@ -7,6 +8,7 @@ namespace Calculator
     {
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<ToastService>();   
         }
 
         public void Configure(IComponentsApplicationBuilder app)
