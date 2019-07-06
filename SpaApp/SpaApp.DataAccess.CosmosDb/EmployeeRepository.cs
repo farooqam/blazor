@@ -1,6 +1,8 @@
-﻿using SpaApp.Shared;
+﻿using System;
+using Microsoft.Azure.Cosmos;
+using Microsoft.Extensions.Options;
+using SpaApp.Shared;
 using SpaApp.Shared.DataAccess;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,29 +10,50 @@ namespace SpaApp.DataAccess.CosmosDb
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public Task<Employee> AddEmployeeAsync(Employee employee)
+        private readonly Container container;
+        private readonly CosmosDbOptions options; 
+
+        public EmployeeRepository(CosmosClient cosmosClient, IOptions<CosmosDbOptions> options)
         {
-            throw new NotImplementedException();
+            this.container = cosmosClient.GetContainer(options.Value.DatabaseName, options.Value.CollectionName);
+            this.options = options.Value;
+        }
+        public async Task<Employee> AddEmployeeAsync(Employee employee)
+        {
+            ItemResponse<Employee> response = await this.container.CreateItemAsync(employee, new PartitionKey(employee.Id));
+            return response.Resource;
         }
 
-        public Task DeleteEmployeeAsync(string id)
+        public async Task DeleteEmployeeAsync(string id)
         {
-            throw new NotImplementedException();
+            ItemResponse<Employee> response = await this.container.DeleteItemAsync<Employee>(id: id, partitionKey: new PartitionKey(id));
         }
 
-        public Task<IEnumerable<Employee>> GetAllEmployeesAsync()
+        public async Task<IEnumerable<Employee>> GetAllEmployeesAsync()
         {
-            throw new NotImplementedException();
+            QueryDefinition query = new QueryDefinition("select * from employees s");
+            FeedIterator<Employee> resultSet = this.container.GetItemQueryIterator<Employee>(query);
+            List<Employee> allEmployees = new List<Employee>();
+
+            while (resultSet.HasMoreResults)
+            {
+                IEnumerable<Employee> employees = (await resultSet.ReadNextAsync()).Resource;
+                allEmployees.AddRange(employees);
+            }
+
+            return allEmployees;
         }
 
-        public Task<Employee> GetEmployeeAsync(string id)
+        public async Task<Employee> GetEmployeeAsync(string id)
         {
-            throw new NotImplementedException();
+            ItemResponse<Employee> response = await this.container.ReadItemAsync<Employee>(id: id, partitionKey: new PartitionKey(id));
+            return response.Resource;
         }
 
-        public Task<Employee> UpdateEmployee(Employee employee)
+        public async Task<Employee> UpdateEmployee(Employee employee)
         {
-            throw new NotImplementedException();
+            ItemResponse<Employee> response = await this.container.UpsertItemAsync<Employee>(item: employee, partitionKey: new PartitionKey(employee.Id));
+            return response.Resource;
         }
     }
 }
