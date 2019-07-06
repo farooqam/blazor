@@ -6,6 +6,8 @@ namespace Calculator.Pages
 {
     public class CalculatorComponentModel : ComponentBase
     {
+        [Inject]
+        protected IJSRuntime JSRuntime { get; set; }
         protected double Operand1 { get; set; }
         protected double Operand2 { get; set; }
         protected double Result { get; set; }
@@ -29,8 +31,8 @@ namespace Calculator.Pages
         {
             if (Operand2 == 0)
             {
-                
-                throw new Exception("Cannot divide by zero.");
+                JSRuntime.InvokeAsync<bool>("showToast");
+                return;
             }
 
             Result = Operand1 / Operand2;
