@@ -5,26 +5,26 @@ namespace Calculator.Pages
 {
     public class CalculatorComponentModel : ComponentBase
     {
-        public double Operand1 { get; set; }
-        public double Operand2 { get; set; }
-        public double Result { get; set; }
+        protected double Operand1 { get; set; }
+        protected double Operand2 { get; set; }
+        protected double Result { get; set; }
 
-        public void Add()
+        protected void Add()
         {
             Result = Operand1 + Operand2;
         }
 
-        public void Subtract()
+        protected void Subtract()
         {
             Result = Operand1 - Operand2;
         }
 
-        public void Multiply()
+        protected void Multiply()
         {
             Result = Operand1 * Operand2;
         }
 
-        public void Divide()
+        protected void Divide()
         {
             if (Operand2 == 0)
             {
