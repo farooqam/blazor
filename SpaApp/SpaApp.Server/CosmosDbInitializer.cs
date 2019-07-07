@@ -28,7 +28,10 @@ namespace SpaApp.Server
 
                 foreach (string uniqueKeyPath in uniqueKeyPaths)
                 {
-                    uniqueKey.Paths.Add(uniqueKeyPath);
+                    if (!string.IsNullOrWhiteSpace(uniqueKeyPath))
+                    {
+                        uniqueKey.Paths.Add(uniqueKeyPath);
+                    }
                 }
 
                 UniqueKeyPolicy uniqueKeyPolicy = new UniqueKeyPolicy();
