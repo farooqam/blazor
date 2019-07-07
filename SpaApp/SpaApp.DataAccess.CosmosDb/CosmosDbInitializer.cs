@@ -1,7 +1,7 @@
 ﻿using Microsoft.Azure.Cosmos;
 using System.Threading.Tasks;
 
-namespace SpaApp.Server
+namespace SpaApp.DataAccess.CosmosDb
 {
     public class CosmosDbInitializer : ICosmosDbInitializer
     {
