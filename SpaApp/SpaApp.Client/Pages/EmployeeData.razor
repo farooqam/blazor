@@ -1,0 +1,154 @@
+@page "/employeerecords"
+@inherits SpaApp.Client.Pages.EmployeeDataComponent
+
+<h1>Employee Data</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-3">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#AddEditModal" @onclick="@AddEmployee">
+                <i class="oi oi-plus"></i>
+                Add Employee
+            </button>
+        </div>
+    </div>
+</div>
+<br />
+
+@*Add-edit modal dialog*@
+
+<div class="modal fade" id="AddEditModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">@modalTitle</h3>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="control-label">Employee ID</label>
+                        <input class="form-control" @bind="@employee.id" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">First Name</label>
+                        <input class="form-control" @bind="@employee.FirstName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Last Name</label>
+                        <input class="form-control" @bind="@employee.LastName" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Location</label>
+                        <input class="form-control" @bind="@employee.Location" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">DOB</label>
+                        <input class="form-control" @bind="@employee.DateOfBirth" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-block btn-success"
+                        @onclick="@(async () => await SaveEmployee())" data-dismiss="modal">
+                    Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete modal dialog*@
+
+<div class="modal fade" id="DeleteModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">@modalTitle</h3>
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">X</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <tr>
+                        <td>Id</td>
+                        <td>@employee.id</td>
+                    </tr>
+                    <tr>
+                        <td>First Name</td>
+                        <td>@employee.FirstName</td>
+                    </tr>
+                    <tr>
+                        <td>Last Name</td>
+                        <td>@employee.LastName</td>
+                    </tr>
+                    <tr>
+                        <td>Location</td>
+                        <td>@employee.Location</td>
+                    </tr>
+                    <tr>
+                        <td>DOB</td>
+                        <td>@employee.DateOfBirth</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" data-dismiss="modal"
+                        @onclick="@(async () => await DeleteEmployee(employee.id))">
+                    Delete
+                </button>
+                <button data-dismiss="modal" class="btn">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Employee list view*@
+
+@if (!employees.Any())
+{
+    <p><em>There are no employees in the system.</em></p>
+}
+
+else
+{
+    <table class='table'>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Location</th>
+                <th>DOB</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var employee in employees)
+            {
+                <tr>
+                    <td>@employee.id</td>
+                    <td>@employee.FirstName</td>
+                    <td>@employee.LastName</td>
+                    <td>@employee.Location</td>
+                    <td>@employee.DateOfBirth</td>
+                    <td>
+                        <button class="btn btn-outline-dark" data-toggle="modal" data-target="#AddEditModal"
+                                @onclick="@(async () => await EditEmployee(@employee.id))">
+                            <i class="oi oi-pencil"></i>
+                            Edit
+                        </button>
+                        <button class="btn btn-outline-danger" data-toggle="modal" data-target="#DeleteModal"
+                                @onclick="@(async () => await ConfirmDelete(@employee.id))">
+                            <i class="oi oi-trash"></i>
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+        
