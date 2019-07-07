@@ -3,9 +3,9 @@ using System.Threading.Tasks;
 
 namespace SpaApp.DataAccess.CosmosDb
 {
-    public class CosmosDbInitializer : ICosmosDbInitializer
+    public class CosmosClientFactory : ICosmosClientFactory
     {
-        public async Task<CosmosClient> InitializeAsync(
+        public async Task<CosmosClient> CreateAsync(
             string endpointUrl,
             string authorizationKey,
             string databaseName,

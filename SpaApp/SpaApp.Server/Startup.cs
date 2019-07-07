@@ -34,8 +34,8 @@ namespace SpaApp.Server
             string endpointUrl = this.Configuration.GetValue<string>("EndPointUrl");
             string authorizationKey = this.Configuration.GetValue<string>("AuthorizationKey");
 
-            ICosmosDbInitializer cosmosDbInitializer = new CosmosDbInitializer();
-            CosmosClient cosmosClient = cosmosDbInitializer.InitializeAsync(
+            ICosmosClientFactory cosmosClientFactory = new CosmosClientFactory();
+            CosmosClient cosmosClient = cosmosClientFactory.CreateAsync(
                 endpointUrl,
                 authorizationKey,
                 this.Configuration.GetValue<string>("DatabaseName"),

@@ -3,9 +3,9 @@ using Microsoft.Azure.Cosmos;
 
 namespace SpaApp.DataAccess.CosmosDb
 {
-    public interface ICosmosDbInitializer
+    public interface ICosmosClientFactory
     {
-        Task<CosmosClient> InitializeAsync(
+        Task<CosmosClient> CreateAsync(
             string endpointUrl,
             string authorizationKey,
             string databaseName, 
