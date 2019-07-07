@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using SpaApp.Shared;
 using SpaApp.Shared.DataAccess;
@@ -21,6 +22,13 @@ namespace SpaApp.Server.Controllers
         {
             Employee addedEmployee = await this.employeeRepository.AddEmployeeAsync(employee);
             return CreatedAtRoute("GetEmployee", new { id = addedEmployee.Id }, addedEmployee);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllEmployees()
+        {
+            IEnumerable<Employee> employees = await this.employeeRepository.GetAllEmployeesAsync();
+            return Ok(employees);
         }
 
         [HttpGet("{id}", Name = "GetEmployee")]
