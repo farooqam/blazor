@@ -10,7 +10,7 @@ namespace SpaApp.Shared.DataAccess
         Task<Employee> GetEmployeeAsync(string id);
         Task<Employee> AddEmployeeAsync(Employee employee);
 
-        Task<Employee> UpdateEmployee(Employee employee);
+        Task<Employee> UpdateEmployeeAsync(Employee employee);
 
         Task DeleteEmployeeAsync(string id);
     }

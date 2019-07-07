@@ -1,0 +1,247 @@
+{
+	"info": {
+		"_postman_id": "8fe55dd9-bb3b-48dc-bf39-e8c398a4025f",
+		"name": "BlazorSPA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5653dcc9-081c-40f8-9590-5e8365854ee7",
+						"exec": [
+							"pm.test('response is created', function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"var employee = pm.response.json();\r",
+							"\r",
+							"pm.test('body contains expected data', function () {\r",
+							"    pm.expect(employee.id).to.equal('e12345');\r",
+							"    pm.expect(employee.first_name).to.equal('Farooq');\r",
+							"    pm.expect(employee.last_name).to.equal('Mahmud');\r",
+							"    pm.expect(employee.location).to.equal('Seattle');\r",
+							"    pm.expect(employee.dob).to.equal('1977-08-12T00:00:00Z');\r",
+							"});\r",
+							"\r",
+							"pm.environment.set('id', employee.id);\r",
+							"\r",
+							"pm.test('response header contains location', function () {\r",
+							"    pm.response.to.be.header('Location', `${pm.environment.get('hostname')}/api/employees/${employee.id}`);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"e12345\",\n\t\"first_name\": \"Farooq\",\n\t\"last_name\": \"Mahmud\",\n\t\"location\": \"Seattle\",\n\t\"dob\": \"1977-08-12T00:00Z\"\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/api/employees",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "5653dcc9-081c-40f8-9590-5e8365854ee7",
+						"exec": [
+							"pm.test('response is accepted', function () {\r",
+							"    pm.response.to.have.status(202);\r",
+							"});\r",
+							"\r",
+							"var employee = pm.response.json();\r",
+							"\r",
+							"pm.test('body contains expected data', function () {\r",
+							"    pm.expect(employee.id).to.equal('e12345');\r",
+							"    pm.expect(employee.first_name).to.equal('Farooq');\r",
+							"    pm.expect(employee.last_name).to.equal('Mahmud');\r",
+							"    pm.expect(employee.location).to.equal('Redmond');\r",
+							"    pm.expect(employee.dob).to.equal('1977-08-12T00:00:00Z');\r",
+							"});\r",
+							"\r",
+							"pm.test('response header contains location', function () {\r",
+							"    pm.response.to.be.header('Location', `${pm.environment.get('hostname')}/api/employees/${employee.id}`);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": \"e12345\",\n\t\"first_name\": \"Farooq\",\n\t\"last_name\": \"Mahmud\",\n\t\"location\": \"Redmond\",\n\t\"dob\": \"1977-08-12T00:00Z\"\n}"
+				},
+				"url": {
+					"raw": "{{hostname}}/api/employees",
+					"host": [
+						"{{hostname}}"
+					],
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7d8d7f7d-8ff4-4c88-b85c-b6d2ecf4f349",
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var employee = pm.response.json()[0];\r",
+							"\r",
+							"pm.test('body contains expected data', function () {\r",
+							"    pm.expect(employee.id).to.equal('e12345');\r",
+							"    pm.expect(employee.first_name).to.equal('Farooq');\r",
+							"    pm.expect(employee.last_name).to.equal('Mahmud');\r",
+							"    pm.expect(employee.location).to.equal('Redmond');\r",
+							"    pm.expect(employee.dob).to.equal('1977-08-12T00:00:00Z');\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:2566/api/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2566",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Employee",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "0cd22288-e5d8-4646-9971-8603c032c7a5",
+						"exec": [
+							"pm.test('response is no content', function () {\r",
+							"    pm.response.to.have.status(204);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:2566/api/employees/{{id}}",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2566",
+					"path": [
+						"api",
+						"employees",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verify Employee Deleted",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7d8d7f7d-8ff4-4c88-b85c-b6d2ecf4f349",
+						"exec": [
+							"pm.test('response is ok', function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"var employee = pm.response.json()[0];\r",
+							"\r",
+							"pm.test('body is empty', function () {\r",
+							"    pm.expect(pm.response.json().length).to.equal(0);\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:2566/api/employees",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "2566",
+					"path": [
+						"api",
+						"employees"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

@@ -20,7 +20,7 @@ namespace SpaApp.DataAccess.CosmosDb
         }
         public async Task<Employee> AddEmployeeAsync(Employee employee)
         {
-            ItemResponse<Employee> response = await this.container.CreateItemAsync(employee, new PartitionKey(employee.Id));
+            ItemResponse<Employee> response = await this.container.CreateItemAsync(employee, new PartitionKey(employee.id));
             return response.Resource;
         }
 
@@ -50,9 +50,9 @@ namespace SpaApp.DataAccess.CosmosDb
             return response.Resource;
         }
 
-        public async Task<Employee> UpdateEmployee(Employee employee)
+        public async Task<Employee> UpdateEmployeeAsync(Employee employee)
         {
-            ItemResponse<Employee> response = await this.container.UpsertItemAsync<Employee>(item: employee, partitionKey: new PartitionKey(employee.Id));
+            ItemResponse<Employee> response = await this.container.UpsertItemAsync<Employee>(item: employee, partitionKey: new PartitionKey(employee.id));
             return response.Resource;
         }
     }

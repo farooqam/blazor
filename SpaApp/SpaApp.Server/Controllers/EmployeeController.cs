@@ -20,8 +20,15 @@ namespace SpaApp.Server.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEmployee([FromBody] Employee employee)
         {
-            Employee addedEmployee = await this.employeeRepository.AddEmployeeAsync(employee);
-            return CreatedAtRoute("GetEmployee", new { id = addedEmployee.Id }, addedEmployee);
+            Employee addedEmployee = await this.employeeRepository.UpdateEmployeeAsync(employee);
+            return CreatedAtRoute("GetEmployee", new { addedEmployee.id }, addedEmployee);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateEmployee([FromBody] Employee employee)
+        {
+            Employee updatedEmployee = await this.employeeRepository.UpdateEmployeeAsync(employee);
+            return AcceptedAtRoute("GetEmployee", new { updatedEmployee.id }, updatedEmployee);
         }
 
         [HttpGet]

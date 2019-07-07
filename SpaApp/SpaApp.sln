@@ -9,7 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaApp.Client", "SpaApp.Cli
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaApp.Shared", "SpaApp.Shared\SpaApp.Shared.csproj", "{ABB2AD16-E0FF-4CEE-AF5C-74C1FC7BAC53}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaApp.DataAccess.CosmosDb", "SpaApp.DataAccess.CosmosDb\SpaApp.DataAccess.CosmosDb.csproj", "{A9AED956-AB6E-4720-BCCF-8D24A50A4DD2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaApp.DataAccess.CosmosDb", "SpaApp.DataAccess.CosmosDb\SpaApp.DataAccess.CosmosDb.csproj", "{A9AED956-AB6E-4720-BCCF-8D24A50A4DD2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PostmanTests", "PostmanTests", "{741D9461-C907-4599-A387-FD91CB244DE4}"
+	ProjectSection(SolutionItems) = preProject
+		PostmanTests\SpaApp - Dev.postman_environment.json = PostmanTests\SpaApp - Dev.postman_environment.json
+		PostmanTests\SpaApp.postman_collection.json = PostmanTests\SpaApp.postman_collection.json
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
