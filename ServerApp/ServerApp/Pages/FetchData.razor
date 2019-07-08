@@ -1,6 +1,8 @@
 @page "/fetchdata"
 @using ServerApp.Data
+@using Microsoft.AspNetCore.Authorization
 @inject WeatherForecastService ForecastService
+@attribute [Authorize]
 
 <h1>Weather forecast</h1>
 
