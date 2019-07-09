@@ -32,12 +32,28 @@ namespace ServerApp
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
             services.AddDefaultIdentity<IdentityUser>()
+                .AddRoles<IdentityRole>()
+                .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            ServiceProvider intermediateSp = services.BuildServiceProvider();
+            RoleManager<IdentityRole> roleManager = intermediateSp.GetRequiredService<RoleManager<IdentityRole>>();
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
+
+                googleOptions.Events.OnTicketReceived = async ctx =>
+                {
+                    var contributorRole = await roleManager.FindByNameAsync("contributor");
+
+                    if (contributorRole == null)
+                    {
+
+                    }
+                    return Task.CompletedTask;
+                };
             });
 
             services.AddRazorPages();
