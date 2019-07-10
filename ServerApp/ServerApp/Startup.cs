@@ -31,29 +31,30 @@ namespace ServerApp
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddRoles<IdentityRole>()
+            services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddDefaultUI()
+                //.AddRoles<IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            ServiceProvider intermediateSp = services.BuildServiceProvider();
-            RoleManager<IdentityRole> roleManager = intermediateSp.GetRequiredService<RoleManager<IdentityRole>>();
+            //ServiceProvider intermediateSp = services.BuildServiceProvider();
+            //RoleManager<IdentityRole> roleManager = intermediateSp.GetRequiredService<RoleManager<IdentityRole>>();
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
 
-                googleOptions.Events.OnTicketReceived = async ctx =>
-                {
-                    var contributorRole = await roleManager.FindByNameAsync("contributor");
+                //googleOptions.Events.OnTicketReceived = async ctx =>
+                //{
+                //    var contributorRole = await roleManager.FindByNameAsync("contributor");
 
-                    if (contributorRole == null)
-                    {
+                //    if (contributorRole == null)
+                //    {
 
-                    }
-                    return Task.CompletedTask;
-                };
+                //    }
+                //    return Task.CompletedTask;
+                //};
             });
 
             services.AddRazorPages();
@@ -62,7 +63,11 @@ namespace ServerApp
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(
+            IApplicationBuilder app, 
+            IWebHostEnvironment env,
+            ApplicationDbContext context,
+            RoleManager<IdentityRole> roleManager)
         {
             if (env.IsDevelopment())
             {
@@ -90,6 +95,8 @@ namespace ServerApp
                 endpoints.MapBlazorHub();
                 endpoints.MapFallbackToPage("/_Host");
             });
+
+            SeedIdentity.Seed(context, roleManager).Wait();
         }
     }
 }
