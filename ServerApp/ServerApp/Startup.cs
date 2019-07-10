@@ -37,24 +37,18 @@ namespace ServerApp
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-            //ServiceProvider intermediateSp = services.BuildServiceProvider();
-            //RoleManager<IdentityRole> roleManager = intermediateSp.GetRequiredService<RoleManager<IdentityRole>>();
+            ServiceProvider intermediateSp = services.BuildServiceProvider();
+            RoleManager<IdentityRole> roleManager = intermediateSp.GetRequiredService<RoleManager<IdentityRole>>();
 
             services.AddAuthentication().AddGoogle(googleOptions =>
             {
                 googleOptions.ClientId = Configuration["Authentication:Google:ClientId"];
                 googleOptions.ClientSecret = Configuration["Authentication:Google:ClientSecret"];
 
-                //googleOptions.Events.OnTicketReceived = async ctx =>
-                //{
-                //    var contributorRole = await roleManager.FindByNameAsync("contributor");
-
-                //    if (contributorRole == null)
-                //    {
-
-                //    }
-                //    return Task.CompletedTask;
-                //};
+                googleOptions.Events.OnTicketReceived = async ctx =>
+                {
+                    var contributorRole = await roleManager.FindByNameAsync("contributor");
+                };
             });
 
             services.AddRazorPages();
